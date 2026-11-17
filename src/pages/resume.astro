@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, experience, education, skills } from '../data/site';
+---
+<Base title="Resume" description={`Resume of ${site.name}, ${site.role}.`}>
+  <section>
+    <h2><span>06</span>Resume</h2>
+    <p class="meta">{site.role} · {site.location} (remote) · {site.email} · github.com/geektousif · linkedin.com/in/syed-md-tousif-2002</p>
+    <button class="btn noprint" onclick="window.print()">Print or save as PDF</button>
+    <p>Backend-focused full-stack developer with 2+ years of experience building and stabilising production systems in Node.js and Django. I work on payments and webhooks, background jobs, concurrency, slow queries and unstable legacy code, from diagnosis through deployment and monitoring.</p>
+  </section>
+  <section>
+    <h2>Experience</h2>
+    {experience.map((e) => (
+      <div class="job">
+        <div class="r"><h3>{e.role}, {e.org}</h3><span class="meta">{e.period}</span></div>
+        <ul>{e.points.map((p) => <li>{p}</li>)}</ul>
+      </div>
+    ))}
+  </section>
+  <section>
+    <h2>Skills</h2>
+    <div class="tools">{skills.map(([k, v]) => <><b>{k}</b><span>{v}</span></>)}</div>
+  </section>
+  <section>
+    <h2>Education</h2>
+    {education.map(([d, s, y]) => <p style="margin:0 0 8px"><strong>{d}</strong>, {s} <span class="meta">({y})</span></p>)}
+  </section>
+</Base>

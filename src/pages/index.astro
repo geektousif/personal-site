@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, projects, smaller, services, lab, path, skills } from '../data/site';
+const [feat, ...rest] = projects;
+---
+<Base>
+  <section id="path">
+    <h2><span>01</span>Path</h2>
+    <ul class="tl">
+      {path.map(([t, d]) => <li><time>{t}</time>{d}</li>)}
+    </ul>
+  </section>
+
+  <section id="work">
+    <h2><span>02</span>Work</h2>
+    <p class="sub">Client names stay private, and numbers are approximate.</p>
+
+    <article class="feat">
+      <h3>{feat.title}, online store and operations</h3>
+      <p class="meta">{feat.stack.join(' · ')} · {feat.year}</p>
+      <p>{feat.intro}</p>
+      <h4>{feat.sections[0].h}</h4>
+      <ul>{feat.sections[0].items?.map((i) => <li>{i}</li>)}</ul>
+      <h4>{feat.sections[1].h}</h4>
+      <div class="diag">
+        <svg viewBox="0 0 640 200" role="img" aria-label="One customer order is split into separate shipments, one per supplier">
+          <rect x="10" y="70" width="130" height="60" rx="5"/><text x="75" y="97" text-anchor="middle">Customer</text><text x="75" y="115" text-anchor="middle">order</text>
+          <rect class="hi" x="215" y="70" width="130" height="60" rx="5"/><text x="280" y="97" text-anchor="middle">Order</text><text x="280" y="115" text-anchor="middle">splitting</text>
+          <rect x="460" y="10" width="170" height="46" rx="5"/><text x="545" y="38" text-anchor="middle">Shipment · Supplier A</text>
+          <rect x="460" y="77" width="170" height="46" rx="5"/><text x="545" y="105" text-anchor="middle">Shipment · Supplier B</text>
+          <rect x="460" y="144" width="170" height="46" rx="5"/><text x="545" y="172" text-anchor="middle">Shipment · Supplier C</text>
+          <path d="M140 100H215M345 100H400M400 33V167M400 33H460M400 100H460M400 167H460"/>
+        </svg>
+      </div>
+      <ul>{feat.sections[1].items?.map((i) => <li>{i}</li>)}</ul>
+    </article>
+
+    {rest.map((p) => (
+      <details>
+        <summary>
+          <span class="y">{p.year}</span>
+          <span><h3>{p.title}</h3><small>{p.stack.join(', ')}</small></span>
+        </summary>
+        <div>
+          <p>{p.intro}</p>
+          {p.sections.map((s) => (
+            <>
+              {s.items && <ul>{s.items.map((i) => <li>{i}</li>)}</ul>}
+              {s.p && <p class="note">{s.p}</p>}
+            </>
+          ))}
+        </div>
+      </details>
+    ))}
+    {smaller.map((s) => <p class="note" style="margin-top:16px">{s}</p>)}
+  </section>
+
+  <section id="services">
+    <h2><span>03</span>Services</h2>
+    <p class="sub">Remote work for teams, agencies and founders anywhere, quoted as a fixed scope or by the hour after a short call.</p>
+    {services.map(([h, d, t]) => (
+      <div class="row"><div><h3>{h}</h3><p>{d}</p></div><span class="st">{t}</span></div>
+    ))}
+    <h3 style="margin:32px 0 10px">How I work</h3>
+    <ol>
+      <li>Send me what is broken or what you want built.</li>
+      <li>We have a short call, and I write up a plan with scope and cost.</li>
+      <li>I work in small steps and keep you updated, with notes you can hand to the next developer.</li>
+      <li>You get the finished work, the documentation and a clear handover.</li>
+    </ol>
+  </section>
+
+  <section id="lab">
+    <h2><span>04</span>Lab</h2>
+    <p class="sub">Personal projects and experiments, each marked with where it really stands.</p>
+    {lab.map(([h, d, s], i) => (
+      <div class="row"><div><h3>{h}</h3><p>{d}</p></div><span class={i === 0 ? 'st now' : 'st'}>{s}</span></div>
+    ))}
+    <p class="note" style="margin-top:16px">Code goes up on <a href={site.github}>GitHub</a> as each piece is ready.</p>
+  </section>
+
+  <section id="tools">
+    <h2><span>05</span>Tools</h2>
+    <div class="tools">{skills.map(([k, v]) => <><b>{k}</b><span>{v}</span></>)}</div>
+  </section>
+
+  <section id="contact">
+    <h2><span>07</span>Contact</h2>
+    <p>I’m open to remote contract, freelance and full-time work. If you have a project, a team, or a messy system that needs another pair of hands, tell me what is slow, broken or missing: <a href={`mailto:${site.email}`}>{site.email}</a>. My <a href="/resume">resume</a> has the full history.</p>
+  </section>
+</Base>

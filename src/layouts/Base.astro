@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+interface Props { title?: string; description?: string; }
+const { title, description = site.description } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  url: Astro.site?.toString(),
+  email: `mailto:${site.email}`,
+  address: { '@type': 'PostalAddress', addressRegion: 'West Bengal', addressCountry: 'IN' },
+  sameAs: [site.github, site.linkedin],
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </head>
+  <body>
+    <div class="wrap">
+      <aside>
+        <h1><a href="/">{site.name}</a></h1>
+        <p class="role">backend / full-stack developer</p>
+        <p class="sum">I work on the parts of an app that sit behind the screen: databases, payments, queues, and the slow or flaky bits of production. Based in West Bengal, India, working remotely.</p>
+        <nav aria-label="Sections">
+          <a href="/#path"><span>01</span>Path</a>
+          <a href="/#work"><span>02</span>Work</a>
+          <a href="/#services"><span>03</span>Services</a>
+          <a href="/#lab"><span>04</span>Lab</a>
+          <a href="/#tools"><span>05</span>Tools</a>
+          <a href="/resume"><span>06</span>Resume</a>
+          <a href="/#contact"><span>07</span>Contact</a>
+        </nav>
+        <div class="soc"><a href={site.github}>GitHub</a><a href={site.linkedin}>LinkedIn</a><a href={`mailto:${site.email}`}>Email</a></div>
+      </aside>
+      <main>
+        <slot />
+        <footer>© {new Date().getFullYear()} {site.name}. Client work is described without names, in line with confidentiality agreements.</footer>
+      </main>
+    </div>
+  </body>
+</html>
